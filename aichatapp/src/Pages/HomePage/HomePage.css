@@ -1,0 +1,128 @@
+.HomePage{
+    display: flex;
+    align-items: center;
+    gap : 100px;
+    height: 100%;
+
+    .left{
+        flex:1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        text-align: center;
+
+        h1{
+            font-size: 100px;
+            background:linear-gradient(to right , #217bfe , #e55571) ;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        h3{
+            font-weight: 400;
+            max-width: 70%;
+        }
+
+        a{
+            padding: 15px 25px;
+            background-color: #217bfe;
+            color: white;
+            border-radius: 20px;
+            font-size : 14px ;
+
+            &:hover{
+                background-color: white;
+                color : #217bfe
+            }
+        }
+
+        
+    }
+    
+
+    .right{
+        flex:1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80%;
+
+        .imgContainer{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #140e2d;
+            border-radius: 50px;
+            width: 80%;
+            height: 100%;
+            position: relative;
+
+            .bgContainer{
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                position: absolute;
+                top : 0;
+                left: 0;
+                border-radius: 50px;
+
+                /*.bg{
+                    background-image: url("/bg.png");
+                    opacity: 0.3;
+                    width: 200%;
+                    height: 100%;
+                    background-size: auto 100%;
+                    animation: 8s ease-in-out infinite alternatate slideBg;
+                }*/
+
+            }
+        }
+
+        .botImg{
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            animation: 3s ease-in-out infinite alternate botAnimation;
+        }
+    }
+
+    .orbital{
+        position: absolute; /*position it relative to the parent*/
+        bottom: 0;
+        left : 0;
+        opacity: 0.3;  /*barely visible*/
+        animation: 100s linear infinite rotateOribital; /*100s is the duration of the animation, linear is the timing function, infinite is the iteration count, rotateOribital is the name of the keyframe animation*/
+
+    }
+
+}
+
+@keyframes rotateOribial{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(100deg);
+    }
+}
+
+@keyframes botAnimation{
+    0%{
+        transform:scale(1) rotate(0deg);
+    }
+    100%{
+        transform: scale(1.1) rotate(5deg);
+    }
+}
+
+@keyframes slideBg{
+    0%{
+        transform: translate(0);
+    }
+    100%{
+        transform: translate(-50%);
+    }
+}

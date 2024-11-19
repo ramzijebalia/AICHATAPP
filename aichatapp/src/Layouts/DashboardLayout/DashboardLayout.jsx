@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 function DashboardLayout() {
 
-  const { userId , isLoaded} = useAuth();
+  const { userId , isLoaded} = useAuth(); // get teh user ID
 
   const navigate = useNavigate()
   
