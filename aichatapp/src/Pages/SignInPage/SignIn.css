@@ -1,0 +1,7 @@
+.SignIn {
+    height: 100%;
+    display: flex;
+    align-items: center; /* center the content vertically */
+    justify-content: center; /* center the content horizontally */
+
+}
