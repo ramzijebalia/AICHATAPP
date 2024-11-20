@@ -1,6 +1,6 @@
 import { Link, Outlet } from 'react-router-dom';
 import './PageLayout.css';
-import { ClerkProvider , SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import { ClerkProvider , SignedIn,  UserButton } from "@clerk/clerk-react";
 
 const PUBLISHABLE_KEY = process.env.REACT_APP_VITE_CLERK_PUBLISHABLE_KEY
 
