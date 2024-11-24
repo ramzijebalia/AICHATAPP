@@ -15,15 +15,6 @@
         gap: 20px;
         padding: 0px 20px;
 
-        input {
-            flex: 1;  /* it is gonna fit into the remaining space */
-            padding: 20px;
-            border: none;
-            background-color: transparent;
-            outline: none;
-            color: white;
-
-        }
 
         button,label {
             border-radius: 50%;
@@ -41,5 +32,15 @@
             }
 
         }
+    }
+
+    input {
+        flex: 1;  /* it is gonna fit into the remaining space */
+        padding: 20px;
+        border: none;
+        background-color: transparent;
+        outline: none;
+        color: white;
+
     }
 }
