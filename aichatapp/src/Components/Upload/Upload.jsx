@@ -1,4 +1,4 @@
-import { IKContext, IKImage, IKUpload } from 'imagekitio-react';
+import { IKContext, IKUpload } from 'imagekitio-react';
 import { useRef } from 'react';
 
 const urlEndpoint = process.env.REACT_APP_IMAGE_KIT_ENDPOINT; 
