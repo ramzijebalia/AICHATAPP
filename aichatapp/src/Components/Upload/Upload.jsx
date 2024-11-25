@@ -41,10 +41,31 @@ function Upload({setImg}) {
         console.log("Progress", progress);
       };
       
-    const onUploadStart = evt => {
-        console.log("Start", evt);
-        setImg((prev) => ({...prev , isLoading:true}));
+    // Event handler for the start of a file upload
+    const onUploadStart = (evt) => { 
+      // Get the first file from the uploaded file input
+      const file = evt.target.files[0]; 
+      // Create a new FileReader instance to read the file
+      const reader = new FileReader();
+      // Define the callback for when the file has been successfully read
+      reader.onloaded = () => {
+          setImg((prev) => ({
+              ...prev, 
+              isLoading: true, 
+              aiData: {
+                  inlineData: {
+                      // Extract the base64 encoded string from the file
+                      data: reader.result.split(",")[1], 
+                      // Store the file's MIME type
+                      mimeType: file.type, 
+                  }
+              }
+          }));
+          // Begin reading the file as a data URL (base64 encoded string)
+          reader.readAsDataURL(file);
       };
+    };
+
 
     return (
         <IKContext

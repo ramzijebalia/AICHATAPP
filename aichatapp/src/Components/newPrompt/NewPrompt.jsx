@@ -13,7 +13,8 @@ function NewPrompt() {
   const [img, setImg] = useState({
     isLoading : false ,
     error : "",
-    dbData : {}
+    dbData : {},
+    aiData : {}
   });
 
     const endRef = useRef(null);
@@ -31,8 +32,16 @@ function NewPrompt() {
 
   const add = async (text) => {
     setQuestion(text)
-    const result = await model.generateContent(text);
+    // we should check ( if we have any image ) : if it isnot empty snet the image ai data and text and if it is empty snet only teh text
+    const result = await model.generateContent(Object.entries(img.aiData).length  ? [img.aiData , text] : [text]);
+    console.log("result" , result)
     const response = await result.response ;
+    setImg({
+      isLoading : false ,
+      error : "",
+      dbData : {},
+      aiData : {}
+    })
     setAnswer(response.text());
   }
 
