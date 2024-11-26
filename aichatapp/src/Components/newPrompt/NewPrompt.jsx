@@ -33,17 +33,39 @@ function NewPrompt() {
   const add = async (text) => {
     setQuestion(text)
     // we should check ( if we have any image ) : if it isnot empty snet the image ai data and text and if it is empty snet only teh text
-    const result = await model.generateContent(Object.entries(img.aiData).length  ? [img.aiData , text] : [text]);
-    console.log("result" , result)
-    const response = await result.response ;
+    const result = await chat.sendMessageStream(Object.entries(img.aiData).length  ? [img.aiData , text] : [text]);
+    console.log("res" , Object.entries(img.aiData).length)
+    let accumulatedText =""
+    for await(const chunk of result.stream) {
+      const chunkText = chunk.text();
+      console.log("chunkText" , chunkText);
+      accumulatedText += chunkText;
+      setAnswer(accumulatedText)
+    }
     setImg({
       isLoading : false ,
       error : "",
       dbData : {},
       aiData : {}
     })
-    setAnswer(response.text());
   }
+
+
+  const chat = model.startChat({
+    history: [
+      {
+        role: "user",
+        parts: [{text :"Can you help me with a question?"}],
+      },
+      {
+        role: "model",
+        parts: [{text :"Welcome to the chat! How can I help you today?"}],
+      },
+    ],
+    generationConfig: {
+      // maxTokens: 100,
+    },
+  })
 
     return (
       <div className="newPrompt">

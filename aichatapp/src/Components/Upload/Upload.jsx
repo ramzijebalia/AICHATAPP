@@ -61,9 +61,9 @@ function Upload({setImg}) {
                   }
               }
           }));
-          // Begin reading the file as a data URL (base64 encoded string)
-          reader.readAsDataURL(file);
       };
+      // Begin reading the file as a data URL (base64 encoded string)
+      reader.readAsDataURL(file);
     };
 
 
