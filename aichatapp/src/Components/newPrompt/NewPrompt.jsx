@@ -22,7 +22,7 @@ function NewPrompt() {
     endRef.current.scrollIntoView({ behavior: "smooth" });
   }, [question , answer , img.dbData]); // we want to scroll to the bottom when we have a new message or image
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault() // we don't wanna refresh teh page
     const text = e.target.text.value ;  // using the name attribute of the input field "text" to reach teh value
     if(!text) return ; // if the input field is empty we don't wanna do anything

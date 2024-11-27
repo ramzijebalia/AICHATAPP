@@ -26,4 +26,4 @@ const userChatsSchema = new mongoose.Schema({  // teh chta history as we created
 } , [{timestamps: true}]);
 
 
-export default mongoose.models.chat || mongoose.model('userChats', userChatsSchema); // we are exporting the model here
+export default mongoose.models.userChat || mongoose.model('userChats', userChatsSchema); // we are exporting the model here
