@@ -3,17 +3,18 @@ import {useAuth} from "@clerk/clerk-react";
 
 function Dashboard() {
 
-  const userId = useAuth().userId
+  //const userId = useAuth().userId
   const handleSubmit = async(e) => {
     e.preventDefault();
     const text = e.target.text.value;
     if(!text) return;
     await fetch("http://localhost:3001/api/chats", {
       method: "POST",
+      credentials: "include", // we gonne snent our cookies we we gonne use it to verify teh user
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({userId ,text})
+      body: JSON.stringify({text})
     })
   }
     return (

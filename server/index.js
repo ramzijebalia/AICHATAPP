@@ -4,12 +4,13 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import userChats from './models/userChats.js';
 import Chat from './models/chat.js';
+import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node'
 
 
 const port = process.env.PORT || 3001;
 const app = express();
 
-app.use(cors({ origin: process.env.FRONTEND_URL}));
+app.use(cors({ origin: process.env.FRONTEND_URL , credentials: true}));
 app.use(express.json());
 
 
@@ -30,15 +31,21 @@ const imagekit = new ImageKit({
   });
 
 
-app.get("/api/upload", (req, res) => {
+app.get("/api/upload", ClerkExpressRequireAuth(),(req, res) => { //we fonna use ths middleware to verify the user authentication
     const result = imagekit.getAuthenticationParameters();
     res.send(result);
 });
 
+/*app.get("/api/test", ClerkExpressRequireAuth() ,async (req, res) => {
+    const userId = req.auth.userId
+    console.log(userId);
+    res.send("Authenticated");
+    }) */
 
-app.post("/api/chats", async (req, res) => {
-    const {userId , text} = req.body ;
-    console.log("reqbody" , req.body);
+
+app.post("/api/chats",ClerkExpressRequireAuth() , async (req, res) => {
+    const userId = req.auth.userId ;
+    const {text} = req.body ;
     try{
         // create a new chat
         const newChat = new Chat({
@@ -71,6 +78,12 @@ app.post("/api/chats", async (req, res) => {
         res.status(400).send("Error creating chat !!!")
     }
 });
+
+
+app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.status(401).send('Unauthenticated!')
+})
 
 app.listen(port, () => {
     connect();
