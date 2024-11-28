@@ -1,7 +1,18 @@
 import { Link } from "react-router-dom";
 import "./ChatList.css";
+import { useQuery } from "@tanstack/react-query";
 
 const ChatList = () => {
+
+    const { isPending, error, data } = useQuery({
+        queryKey: ['userChatss'],
+        queryFn: () =>
+          fetch(`${process.env.REACT_APP_API_URL}/api/userChats` , 
+            {credentials:"include"
+            }).then((res) => res.json(),
+          ),
+      })
+
  return (
     <div className="chatList">
         <span className="title">DASHBOARD</span>
@@ -10,21 +21,17 @@ const ChatList = () => {
         <Link to="/">Contact</Link>
         <hr />
         <span className="title">RECENT CHATS</span>
-        <div className="list"> 
-            <Link to="/">My chat Title 1</Link>
-            <Link to="/">My chat Title 2</Link>
-            <Link to="/">My chat Title 3</Link>
-            <Link to="/">My chat Title 4</Link>
-            <Link to="/">My chat Title 5</Link>
-            <Link to="/">My chat Title 6</Link>
-            <Link to="/">My chat Title 7</Link>
-            <Link to="/">My chat Title 2</Link>
-            <Link to="/">My chat Title 3</Link>
-            <Link to="/">My chat Title 4</Link>
-            <Link to="/">My chat Title 5</Link>
-            <Link to="/">My chat Title 6</Link>
-            <Link to="/">My chat Title 7</Link>
-        </div>
+        <div className="list">
+        {isPending
+          ? "Loading..."
+          : error
+          ? "Something went wrong!"
+          : data?.map((chat) => (
+              <Link to={`/dashboard/chats/${chat._id}`} key={chat._id}>
+                {chat.title}
+              </Link>
+            ))}
+      </div>
         <hr />
         <div className="upgrade">
             <img src="/logo.png" alt="" />

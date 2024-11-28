@@ -82,14 +82,17 @@ app.post("/api/chats",ClerkExpressRequireAuth() , async (req, res) => {
 
 app.get("/api/userChats", ClerkExpressRequireAuth(), async (req, res) => {
     const userId = req.auth.userId;
+    console.log("user id " ,userId);
 
     try{
-        const userChats = userChats.find({userId})
-        res.status(200).send(userChats[0].chats);  // we will send the first element of the array
+        
+        const userChatss = await userChats.find({userId :userId})
+        console.log("userchats " , userChatss[0].chats);
+        res.status(200).send(userChatss[0].chats);  // we will send the first element of the array
 
     } 
-    catch(er){
-        console.log(error);
+    catch(err){
+        console.log(err);
         res.status(500).send("Error fetching chats !!!")
     }
 })
