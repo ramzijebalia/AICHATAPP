@@ -1,21 +1,38 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import './Dashboard.css';
-import {useAuth} from "@clerk/clerk-react";
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
 
-  //const userId = useAuth().userId
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: (text) => {
+      return fetch(`${process.env.REACT_APP_API_URL}/api/chats`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text }),
+      }).then((res) => res.json());
+    },
+    onSuccess: (id) => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ["userChatss"] });
+      navigate(`/dashboard/chats/${id}`);
+    },
+  });
+
+
+
+
   const handleSubmit = async(e) => {
     e.preventDefault();
     const text = e.target.text.value;
     if(!text) return;
-    await fetch("http://localhost:3001/api/chats", {
-      method: "POST",
-      credentials: "include", // we gonne snent our cookies we we gonne use it to verify teh user
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({text})
-    })
+    mutation.mutate(text);
   }
     return (
       <div className="dashboard">
