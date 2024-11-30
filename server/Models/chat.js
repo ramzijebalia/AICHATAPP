@@ -13,17 +13,19 @@ const chatSchema = new mongoose.Schema({  // teh chta history as we created in t
                 enum : ['user', 'model'],
                 required: true
             }, 
-            parts:{
-                text:{
-                    type: String,
-                    required: true
-                }
-            },
+            parts:[
+                {
+                    text:{
+                        type: String,
+                        required: true
+                    }
+                },
+            ],
             img:{
                 type: String, 
                 required: false
             },
-        }
+        },
     ]
 } , [{timestamps: true}]);
 

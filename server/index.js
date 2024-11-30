@@ -50,7 +50,7 @@ app.post("/api/chats",ClerkExpressRequireAuth() , async (req, res) => {
         // create a new chat
         const newChat = new Chat({
             userId: userId ,
-            history : [{role:"user" ,parts:{text} }]
+            history : [{role:"user" ,parts:[{text}] }]
         })
 
         const saveChat = await newChat.save();
@@ -84,7 +84,7 @@ app.get("/api/userChats", ClerkExpressRequireAuth(), async (req, res) => {
     const userId = req.auth.userId;
     try{
         
-        const userChatss = await userChats.find({userId :userId})
+        const userChatss = await userChats.find({userId})
         res.status(200).send(userChatss[0].chats);  // we will send the first element of the array
 
     } 
@@ -105,6 +105,37 @@ app.get("/api/chats/:id", ClerkExpressRequireAuth(), async (req, res) => {
     catch(err){
         console.log(err);
         res.status(500).send("Error fetching chat !!!")
+    }
+})
+
+// we  gonna update  our existing chats ( adding the ai messages )
+app.put("/api/chats/:id", ClerkExpressRequireAuth(), async (req, res) => {
+    const userId = req.auth.userId;
+    const { question, answer  , img} = req.body;
+
+    const newItems = [
+        ...(question //w eused the conditional operator because when we create  a new chat the first of the user is already saved inthe db
+                    // if there si a question snet teh user message s, if not snet an empty array
+            ? [{role: "user" , parts: [{text: question }], ...(img && {img})} ]
+            : []),
+            { role: "model", parts: [{ text: answer }] },
+    ]
+
+    try{
+        const updatedChat = await Chat.updateOne(
+            {_id: req.params.id , userId}, 
+            {$push: 
+                {history: {
+                    $each : newItems // it will add the new items to the existing history
+                }} 
+            }
+        )
+        res.status(200).send(updatedChat);  
+
+    } 
+    catch(err){
+        console.log(err);
+        res.status(500).send("Error  adding converstaion !!!")
     }
 })
 

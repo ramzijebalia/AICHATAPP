@@ -24,34 +24,34 @@ function ChatPage() {
       <div className="chatPage">
         <div className="wrapper">
           <div className="chat">
-            {isPending
-            ? "Loading..."
-            : error
-            ? "Something went wrong!"
-            : data?.history?.map((message, i) => (  // we use the map function to loop through the history array ( see teh model)
-            <>
-            {message.img && (
-              <IKImage
-                urlEndpoint={process.env.REACT_APP_IMAGE_KIT_ENDPOINT}
-                path={message.img}
-                height="300"
-                width="400"
-                transformation={[{height: "300",width: "400"}]}
-                loading='lazy' 
-                lqip={{ active: true, quality : 20 }}  //its how us teh low quality version of teh image
-              >
-
-              </IKImage>
-            )}
-              <div className={message.role === "user" ? "message user" : "message" } key={i}>
-                  <Markdown>{message.parts.text}</Markdown>    
-                  {console.log(message)}    
+          {isPending
+          ? "Loading..."
+          : error
+          ? "Something went wrong!"
+          : data?.history?.map((message, i) => ( // Iterate over history array
+              <div key={i}>
+                {message.img && (
+                  <IKImage
+                    urlEndpoint={process.env.REACT_APP_IMAGE_KIT_ENDPOINT}
+                    path={message.img}
+                    height="300"
+                    width="400"
+                    transformation={[{ height: "300", width: "400" }]}
+                    loading="lazy"
+                    lqip={{ active: true, quality: 20 }} // Show low-quality image preview
+                  />
+                )}
+                <div className={message.role === "user" ? "message user" : "message"}>
+                  {message.parts.map((part, index) => ( // Iterate over parts array
+                    <Markdown key={index}>{part.text}</Markdown>
+                  ))}
+                </div>
               </div>
-            </>
             ))}
+
             
             
-            <NewPrompt />
+            {data && <NewPrompt data={data} /> }
           </div>
         </div>
       </div>
