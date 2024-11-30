@@ -14,7 +14,7 @@ const queryClient = new QueryClient()
 
 function PageLayout() {
     return (
-      <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+      <ClerkProvider publishableKey={process.env.REACT_APP_VITE_CLERK_PUBLISHABLE_KEY} afterSignOutUrl="/">
         <QueryClientProvider client={queryClient}>
           <div className="PageLayout">
             <header> 
